@@ -1,0 +1,256 @@
+%%This is a very basic article template.
+%%There is just one section and two subsections.
+\documentclass{beamer}
+
+\input{preamble}
+
+\tikzstyle{simplenode}=[shape=circle,draw=black,
+top color=ubcgray!5,bottom color=ubcgray!40,
+semithick]
+\tikzstyle{basicnode}=[simplenode,circular drop shadow]
+
+\title[Biomedical Image Segmentation by Deep Learning]{White Matter Lesion
+Segmentation\\ by Deep Learning}
+
+\author{Tom Brosch}
+
+\institute[Universities of British Columbia]
+{
+MS/MRI Research Group\\
+Electrical and Computer Engineering\\
+University of British Columbia
+}
+
+%\date{Ph.D. Proposal Defense}
+\date{February 22, 2016}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\makeatletter
+\setbeamertemplate{enumerate items}{
+    \llap{\begin{pgfpicture}{-1ex}{-0.8ex}{1ex}{1ex}
+      {\pgftransformscale{0.9}\pgftext{\beamer@usesphere{section number
+      projected}{tocsphere}}} \pgftext{%
+        \usebeamerfont*{section number projected}%
+        \usebeamercolor{section number projected}%
+        \color{fg!90!bg}%
+        \insertenumlabel}
+    \end{pgfpicture}%
+    %\kern0.15ex
+    }%
+}
+\makeatother
+
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+\section{Introduction}
+
+\subsection{Motivation}
+
+\begin{frame}{Motivation}
+\begin{itemize}
+\item White matter lesions are a hallmark of MS
+\item Imaging biomarkers for tracking disease progression and treatment effect,
+e.g.:
+\begin{itemize}
+\item Lesion load
+\item Lesion count
+\end{itemize}
+\item Lesions vary greatly in size, shape, intensity and location
+\item<2->[$\Rightarrow$] \alert{Automatic and accurate segmentation
+challenging!}
+\end{itemize}
+\end{frame}
+
+\subsection{Related Work}
+
+\begin{frame}{Related Work: Unsupervised methods}
+\begin{description}
+\item[Approach 1] 
+Divide the intensities of brain MRIs into the four clusters
+CSF, grey matter, white matter, and lesion voxels (e.g., lesion-TOADS)
+\item[Approach 2] Model the intensity distribution of CSF, gray matter, and
+white matter; lesions are outlines of that distribution (e.g., EMS)
+\end{description}
+\begin{itemize}
+\pros<2-> Don't require labelled data for training
+\pros<2-> Segmentation based on a per-subject per-image model
+\pros<2-> Robust to inter-subject and inter-image variability
+\cons<3-> Not specific to lesions
+\cons<3-> Sensitive to non-lesion outliers such as blood vessels and partial
+volume effects
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Related Work: Supervised methods}
+\begin{description}
+\item[Approach] Segmentation as a voxel classification problem
+\item[Pipeline] Extract features $\Rightarrow$ classify voxel $\Rightarrow$
+post-processing
+\item[Features] Pre-defined or learned from unlabelled images
+\item[Classifier] Random-forest, SVM, neural networks, library-based
+\item[Post-processing] Markov random field, removal of isolated voxels
+\end{description}
+\begin{itemize}
+\pros<2-> Lesion-specific
+\cons<3-> Sensitive to inter-subject and inter-scanner variability
+\cons<3-> Require large amounts of training data
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Related Work: End-to-end learning}
+\begin{description}
+\item[Main idea] Joint learning of features and classifier from labelled data
+using a convolutional neural network (CNN)
+\item[Approach 1] Classify image patches using a CNN (patch-based)
+\item[Approach 2] Feed in entire volumes into a CNN\\ (fully convolutional)
+\end{description}
+\begin{itemize}
+\pros<2-> Lesion-specific
+\pros<2-> Learning of features that are tuned to the data and segmentation
+task
+\pros<2-> Can learn features that are robust to inter-subject and inter-scanner
+variability
+\cons<3-> Requires large amounts of training data
+\cons<3-> Training and inference of patch-based approaches can be prohibitively
+slow
+\end{itemize}
+\end{frame}
+
+\section{Method}
+
+\subsection{Overview}
+
+\begin{frame}{Method overview}
+\begin{itemize}
+\item Training based method
+\item Requires pairs of MRIs and corresponding segmentations
+\item Learns parameters to perform segmentation
+\item Replicate slides from my talk
+\item Simple neuron slide with knobs
+\item Patch-based neural network for training
+\item Fully convolutional
+\end{itemize}
+\end{frame}
+
+\subsection{Training}
+
+\begin{frame}{Training Framework}
+\begin{itemize}
+\item Trained by gradient descent
+\item Gradient calculated using back-propagation
+\item What is a good objective function?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Objective Function}
+\begin{itemize}
+\item Sum of squared differences
+\begin{itemize}
+\item Simple and often used
+\item Puts equal emphasis on lesion and non-lesion voxels
+\item However, lesion voxels make up only few percent of all voxels
+\item<2->[$\Rightarrow$] \alert{Can learn to ignore lesion voxels!} 
+\end{itemize}
+\item<3-> Weighted combination of sensitivity and specificity
+\begin{itemize}
+\item Can be used together to assess segmentation performance
+\item Allows weighting of the importance of both terms
+\item Formalized to yield smooth gradients allows faster convergence
+\item<4->[$\Rightarrow$] \alert{New objective function facilitates the use of
+fully convolutional neural networks for lesion segmentation!}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{Network architecture}
+
+\begin{frame}{Network Architecture /1}
+\begin{itemize}
+\item 3-layer network (use same style as journal paper)
+\item Show result
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Network Architecture /2}
+\begin{itemize}
+\item 7-layer CEN without shortcuts
+\item Show result
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Network Architecture /3}
+\begin{itemize}
+\item 7-layer CEN with shortcuts
+\item Show result
+\end{itemize}
+\end{frame}
+
+\section{Evaluation}
+
+\subsection{Overview}
+
+\begin{frame}{Overview}
+\begin{itemize}
+\item Evaluated on two data sets
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Evaluation Measures}
+\begin{itemize}
+\item DSC
+\item Lesion true positives rate
+\item Lesion false positive rate
+\item Volume difference
+\end{itemize}
+\end{frame}
+
+\subsection{MICCAI 2008 Lesion Segmentation Challenge}
+
+\begin{frame}{MICCAI 2008 Lesion Segmentation Challenge /1}
+\begin{itemize}
+\item Explain the data
+\end{itemize}
+\end{frame}
+
+\begin{frame}{MICCAI 2008 Lesion Segmentation Challenge /1}
+Results table
+\end{frame}
+
+\subsection{Bravo data set}
+
+\begin{frame}{Bravo data set /1}
+\begin{itemize}
+\item Explain data set
+\item Explain stratification
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Bravo data set /2}
+Results table
+\end{frame}
+
+\begin{frame}{Bravo data set /2}
+Plots one by one.
+\end{frame}
+
+\section{Conclusions}
+
+\begin{frame}{Conclusions}
+\begin{itemize}
+\item Look at conclusions
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+Thank you. Questions?
+\end{frame}
+
+\end{document}
