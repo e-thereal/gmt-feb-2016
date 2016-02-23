@@ -4,9 +4,10 @@
 \newcommand{\E}{\ensuremath{\mathds{E}}}
 
 \usepackage{fontawesome}
+\usepackage{graphicx}
 
-\newcommand{\pros}{\item[\textcolor{green!80!black}\faThumbsUp]}
-\newcommand{\cons}{\item[\textcolor{red!80!black}\faThumbsDown]}
+\newcommand{\pros}{\item[\textcolor{green!80!black}\faThumbsOUp]}
+\newcommand{\cons}{\item[\textcolor{red!80!black}\faThumbsODown]}
 
 % Setup appearance:
 
@@ -67,14 +68,13 @@
   fraction-function=\sfrac
 }
 
-\usetikzlibrary{arrows,fadings,fit,positioning}
-\usetikzlibrary{matrix,shadows}
+\usetikzlibrary{arrows,fadings,fit,positioning,spy,shapes.geometric}
+\usetikzlibrary{matrix,shadows,decorations,backgrounds,scopes}
+\usetikzlibrary{intersections,3d,calc,decorations.pathreplacing}
 
 \pgfdeclarelayer{background}
 \pgfsetlayers{background,main}
 %\pgfplotsset{every extra y tick/.append style={grid style=black}}
-\usetikzlibrary{decorations,backgrounds,scopes,calc,decorations.pathreplacing}
-\usetikzlibrary{shapes.geometric}
 
 \newcounter{slidenumber}
 \newcounter{pagesofcurrentframe}
