@@ -18,19 +18,17 @@ Segmentation\\ by Deep Learning}
 {
 MS/MRI Research Group\\
 Electrical and Computer Engineering\\
-University of British Columbia
+The University of British Columbia
 }
 
 %\date{Ph.D. Proposal Defense}
-\date{February 22, 2016}
+\date{UBC MS Connect Presentation}
 
 \begin{document}
 
 \begin{frame}
 \titlepage
 \end{frame}
-
-% TODO: remove this. It's just a dummy edit
 
 \makeatletter
 \setbeamertemplate{enumerate items}{
@@ -64,10 +62,17 @@ e.g.:
 \item Lesion load
 \item Lesion count
 \end{itemize}
-\item Lesions vary greatly in size, shape, intensity and location
+\item<2-> Lesions vary greatly in size, shape, intensity and location
 \item<2->[$\Rightarrow$] \alert{Automatic and accurate segmentation
 challenging!}
 \end{itemize}
+\uncover<2->{
+\begin{center}
+\includegraphics[height=0.3\textwidth]{images/fewlesions}\quad
+\includegraphics[height=0.3\textwidth]{images/manylesions}\quad
+\includegraphics[height=0.3\textwidth]{images/periventricular}%
+\end{center}
+}
 \end{frame}
 
 \subsection{Related Work}
@@ -138,8 +143,6 @@ slow
 \end{frame}
 
 \subsection{An Introduction to Neural Networks}
-
-% TODO: Knobs.
 
 \begin{frame}{Neuron}
 \begin{columns}[onlytextwidth]
@@ -535,7 +538,7 @@ dashed,label={[overlay]90:Segmentation $\vect{x}^{(L)}$}] {};
 \alert{Calculate segmentations of entire volumes in one forward pass!}
 \end{frame}
 
-\subsection{Network architecture}
+\subsection{Network Architecture}
 
 \begin{frame}[fragile]{Network Architecture: 3-layer CEN}
 \begin{columns}
@@ -757,6 +760,7 @@ node[overlay] at (10pt,-46pt);
 % TODO: Trained on different input modalities
 % TODO: Explain what the measures are, what means good, how to interpret the
 %       results
+% TODO: Show quantitative results of good cases
 
 \begin{frame}{Overview}
 Evaluated on two data sets:
@@ -766,10 +770,12 @@ Evaluated on two data sets:
 \item 20 training, 23 testing images
 \item Modalities: T1w, T2w, FLAIR 
 \end{itemize}
-\item In-house data set (``Bravo development'')
+\item Clinical trial data set
 \begin{itemize}
 \item 250 training, 77 testing images
 \item Modalities: T1w, T2w, PDw, FLAIR
+\item Compraed to 5 freely available methods
+\item Stratified by average lesion size
 \end{itemize}
 \end{itemize}
 \vspace{1em}
@@ -815,9 +821,76 @@ $5,7$ & Jerman et al.    & 84.1555 & 65.15 & 63.75 & 77.45 \\
 \end{center}
 \end{frame}
 
-\subsection{In-house Data Set}
+\subsection{Clinical Trial Data Set}
 
-\begin{frame}{In-house Data Set /1}
+\begin{frame}{Clinical Trial Data Set}
+\vspace{2em}
+\begin{center}
+\tikz[overlay] \node{%
+\includegraphics[width=\textwidth]{images/dsc_arch}};
+\end{center}
+\end{frame}
+
+\begin{frame}{Clinical Trial Data Set}
+\includegraphics[width=1.02\textwidth]{images/dsc2}
+\end{frame}
+
+\begin{frame}{Clinical Trial Data Set}
+\includegraphics[width=1.02\textwidth]{images/tpr}
+\end{frame}
+
+\begin{frame}{Clinical Trial Data Set}
+\includegraphics[width=1.02\textwidth]{images/fpr}
+\end{frame}
+
+\section{Conclusions}
+
+\subsection{Summary}
+
+\begin{frame}{Summary}
+\begin{itemize}
+\item Presented a segmentation method based on convolutional encoder networks
+\item Joint learning of feature extractor and classifier facilitates the
+learning that are tuned to a given combination of image modalities and
+segmentation task
+\item General framework $\Rightarrow$ can be applied to other segmentation
+problems
+\end{itemize}
+
+\begin{itemize}
+\item[\faQuestionCircle] What other structures are of interest?
+\item[\faQuestionCircle] Do we have data to train the model? 
+\end{itemize}
+\end{frame}
+
+\subsection{Future Work}
+
+\begin{frame}{Future Work}
+\begin{itemize}
+\item Segmentation of the corpus callosum
+\item<3-> Segmentation of the spinal cord
+\item<5-> Segmentation of spinal cord grey matter
+\end{itemize}
+\begin{center}
+\only<1>{\includegraphics[height=0.45\textwidth]{images/T1w_6}}%
+\only<2>{\includegraphics[height=0.45\textwidth]{images/segmentation_6}}%
+\only<3>{\includegraphics[height=0.45\textwidth]{images/T1w_8}}%
+\only<4>{\includegraphics[height=0.45\textwidth]{images/WM_8}}%
+\only<5>{\includegraphics[height=0.45\textwidth]{images/T1w_roi_8}}%
+\only<6>{\includegraphics[height=0.45\textwidth]{images/GM_roi_8}}%
+\end{center}
+\end{frame}
+
+\begin{questionmarks}
+\begin{frame}
+\centering
+\Large Thank you for your attention.
+\end{frame}
+\end{questionmarks}
+
+\appendix
+
+\begin{frame}{Clinical Trial Data Set}
 \begin{center}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
@@ -837,7 +910,7 @@ LST-LPA & 46.07 & 48.02 & 52.94 & 41.62 \\
 \end{center}
 \end{frame}
 
-\begin{frame}{In-house Data Set /2}
+\begin{frame}{Clinical Trial Data Set}
 \begin{center}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
@@ -883,65 +956,5 @@ Very large & $> 500$ & 9 & \num{35238+-27531} \\
 \end{tabular}
 \end{center}
 \end{frame}
-
-\begin{frame}{Stratified by Lesion Size: DSC}
-\includegraphics[width=1.02\textwidth]{images/dsc2}
-\end{frame}
-
-\begin{frame}{Stratified by Lesion Size: Lesion TPR}
-\includegraphics[width=1.02\textwidth]{images/tpr}
-\end{frame}
-
-\begin{frame}{Stratified by Lesion Size: Lesion FPR}
-\includegraphics[width=1.02\textwidth]{images/fpr}
-\end{frame}
-
-\section{Conclusions and Future Work}
-
-\subsection{Conclusions}
-
-\begin{frame}{Conclusions}
-\begin{itemize}
-\item Presented a segmentation method based on convolutional encoder networks
-\item Joint learning of feature extractor and classifier facilitates the
-learning that are tuned to a given combination of image modalities and
-segmentation task
-\item General framework $\Rightarrow$ can be applied to other segmentation
-problems
-\end{itemize}
-
-\begin{itemize}
-\item[\faQuestionCircle] What other structures are of interest?
-\item[\faQuestionCircle] Do we have data to train the model? 
-\end{itemize}
-\end{frame}
-
-\subsection{Future Work}
-
-\begin{frame}{Future Work}
-\begin{itemize}
-\item Neurons in an artificial neural network loosely inspired by nerve cells
-\item Activation of a neuron is the weighted sum of its inputs
-\item Activation functions acts as a threshold after which the action potential
-is propagated through the axon to other nerve cells
-\item[$\Rightarrow$] Simple artificial neurons can only calculate weighted sums
-\end{itemize}
-
-\begin{itemize}
-\item<2->[\faQuestionCircle] How good does the simple model represent the
-processing capabilities of nerve cells?
-\item<2->[\faQuestionCircle] What about other operations such as
-multiplication, correlation, \dots ?
-\item<2->[\faQuestionCircle] Can we incorporate modulatory receptors, which can
-cause long-lasting effects not directly related to firing rate?
-\end{itemize}
-\end{frame}
-
-\begin{questionmarks}
-\begin{frame}
-\centering
-Thank you. Questions?
-\end{frame}
-\end{questionmarks}
 
 \end{document}
