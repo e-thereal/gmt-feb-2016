@@ -41,13 +41,28 @@
 \setbeamerfont*{alerted text}{series=\bfseries}
 
 \usepackage[english]{babel}
-\usepackage[latin1]{inputenc}
 \usepackage{animate}
+
+\usepackage{ifxetex}
+
+\ifxetex
+
+\usepackage{fontspec}
+
+% converts LaTeX specials (``quotes'' --- dashes etc.) to unicode
+%\setsansfont[Scale=1]{Optima}
+%\setsansfont[Scale=1]{Optima}
+%\setsansfont[Scale=1,Mapping=tex-text,BoldFont={Kievit-Bold}]{Kievit-Book}
+%\setsansfont[Scale=1,Mapping=tex-text,BoldFont={Optima-Bold},ItalicFont={Optima-Italic}]{Optima-Regular}
+\setsansfont[Scale=1,Mapping=tex-text,BoldFont={Optima-Bold},ItalicFont={Optima-Italic}]{Optima}
+
+\else
 
 \usepackage{times}
 \renewcommand*\sfdefault{uop}
-
+\usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
+\fi
 
 % Setup TikZ
 

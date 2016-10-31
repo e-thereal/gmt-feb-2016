@@ -4,6 +4,13 @@
 
 \input{preamble}
 
+\newcommand{\footlineextra}[1]{
+\begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=-1.5em,yshift=1em,anchor=south east] at (current page.south
+    east) {\footnotesize #1};
+\end{tikzpicture}
+}
+
 \tikzstyle{simplenode}=[shape=circle,draw=black,
 top color=ubcgray!5,bottom color=ubcgray!40,
 semithick]
@@ -45,6 +52,27 @@ The University of British Columbia
 }
 \makeatother
 
+{ % all template changes are local to this group.
+\setbeamertemplate{navigation symbols}{}
+\begin{frame}[plain,b]
+	
+    \begin{tikzpicture}[remember picture,overlay]
+        \node[at=(current page.center)] {
+            %\includegraphics[width=\paperwidth]{images/ubc_flag}
+            \includegraphics[height=\paperheight]{images/ubc_lib}
+        };
+    \end{tikzpicture}
+
+  \color{white}
+  founded in 1908\\[0.25em]
+  more than 61,113 students\\[0.25em]
+  13,189 international students from 155 countries\\[0.25em]
+  ranked among the 20 best public universities worldwide\\
+  \small by U.S. News and World Report and Times Higher Education in
+  2015\\[1.1em]
+ \end{frame}
+}
+
 \begin{frame}{Outline}
 \tableofcontents
 \end{frame}
@@ -52,6 +80,59 @@ The University of British Columbia
 \section{Introduction}
 
 \subsection{Motivation}
+
+\begin{frame}{Multiple Sclerosis}
+
+%\begin{figure}[tb]
+\centering
+\begin{tikzpicture}
+\tikzstyle{every node}=[font=\small]
+
+\node[] (healthy)
+{\includegraphics[width=0.5\textwidth]{images/healthyneuron}};
+\node[,below=-.5cm of healthy] (damaged)
+{\includegraphics[width=0.5\textwidth]{images/damagedneuron}};
+
+\node[fit=(healthy)(damaged), inner sep=0] (neurons) {};
+
+\node[right=1cm of neurons] (brain)
+{\includegraphics[width=0.4\textwidth]{images/brain}};
+
+\coordinate (m1) at (-0.75,0.9);
+\coordinate (m2) at (0.95,0.9);
+\coordinate (m3) at (1.65,-2.75);
+
+\node[fit=(m1)(m2)] (myelin) {};
+
+\node[above=0.65cm of myelin] (sheaths) {Myelin sheaths};
+
+\draw (m1)--(sheaths);
+\draw (m2)--(sheaths);
+
+\node[ellipse,draw=red,thick,minimum width=1.3cm, minimum height=0.7cm,
+label=90:Damaged myelin] at (m3) {};
+
+\coordinate (wm) at (5.4,-0.5);
+\coordinate (wml) at (5.3,-1.9);
+
+%\draw[red] (wm) circle (3pt);
+%\draw[red] (wml) circle (3pt);
+
+\draw[gray,thick] (wm)--(healthy);
+\draw[gray,thick] (wml)--(damaged);
+
+%\draw[step=1cm,gray,very thin] (-1,2) grid (6,-4);
+
+\end{tikzpicture}
+
+% \caption[Demyelination in MS]{Due to the break down of the blood brain barrier,
+% the bodies own immune system attacks the myelin sheaths of the axons, which
+% causes the formation of demyelinating lesions, visible primarily in the white
+% matter on conventional \gls{mri} scans. Lesions are highlighted in white.}
+% \label{fig:ms}
+% \end{figure}
+
+\end{frame}
 
 \begin{frame}{Motivation}
 \begin{itemize}
@@ -93,6 +174,7 @@ white matter; lesions are outlines of that distribution (e.g., EMS)
 \cons<3-> Sensitive to non-lesion outliers such as blood vessels and partial
 volume effects
 \end{itemize}
+\footlineextra{[Shiee et al, NeuroImage 2011; Van Leemput et al, TMI 2001]}
 \end{frame}
 
 \begin{frame}{Related Work: Supervised methods}
@@ -109,6 +191,7 @@ post-processing
 \cons<3-> Sensitive to inter-subject and inter-scanner variability
 \cons<3-> Require large amounts of training data
 \end{itemize}
+\footlineextra{[Geremia et al., MICCAI 2010]}
 \end{frame}
 
 \begin{frame}{Related Work: End-to-end learning}
@@ -128,6 +211,7 @@ variability
 \cons<3-> Training and inference of patch-based approaches can be prohibitively
 slow
 \end{itemize}
+\footlineextra{[Ciresan et al., NIPS 2012; Brosch et al., MICCAI/TMI 2016]}
 \end{frame}
 
 \section{Method}
@@ -244,6 +328,7 @@ layer\\$\vect{x}^{(L)}$] {};
 \end{align*}
 \end{block}
 \end{center}
+\footlineextra{[Werbos, PhD Thesis 1974; Rumelhart et al., Nature 1986]}
 \end{frame}
 
 
@@ -327,12 +412,14 @@ sharing})
 \item<4->[$\Rightarrow$] \alert{Convolutional neural network}
 \end{itemize}
 \end{column}
+\footlineextra{[Fukushima, Biol. Cybernetics 1980; LeCun et al., IEEE 1998]}
 \end{columns}
+
 \end{frame}
 
 \begin{frame}{Patch-based Convolutional Neural Networks}
 \centering
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.95]
 
 \tikzstyle{neuron}=[draw,circle,minimum width=0.6cm]
 \tikzstyle{every node}=[font=\small]
@@ -422,11 +509,12 @@ sharing})
 calculations] {};
 
 \end{tikzpicture}
+\footlineextra{[Ciresan et al., NIPS 2012]}
 \end{frame}
 
 \begin{frame}{Fully Convolutional Neural Networks}
 \centering
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.95]
 
 \tikzstyle{neuron}=[draw,circle,minimum width=0.6cm]
 \tikzstyle{every node}=[font=\small]
@@ -486,11 +574,12 @@ dashed,label=90:$\vect{x}^{(L)}$] {};
 }
 
 \end{tikzpicture}
+\footlineextra{[Long et al., CVPR 2015]}
 \end{frame}
 
 \begin{frame}{Convolutional Encoder Networks}
 \centering
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.95]
 
 \tikzstyle{neuron}=[draw,circle,minimum width=0.6cm]
 \tikzstyle{every node}=[font=\small]
@@ -536,6 +625,7 @@ dashed,label={[overlay]90:Segmentation $\vect{x}^{(L)}$}] {};
 
 \end{tikzpicture}\\[0.5em]
 \alert{Calculate segmentations of entire volumes in one forward pass!}
+\footlineextra{[Brosch et al., MICCAI 2016]}
 \end{frame}
 
 \subsection{Network Architecture}
@@ -610,6 +700,7 @@ node[overlay] at (10pt,-46pt);
 \end{tikzpicture}
 \end{column}
 \end{columns}
+\footlineextra{[Brosch et al., TMI 2016]}
 \end{frame}
 
 \begin{frame}[fragile]{Network Architecture: 7-layer CEN}
@@ -680,6 +771,7 @@ node[overlay] at (10pt,-46pt);
 \end{tikzpicture}
 \end{column}
 \end{columns}
+\footlineextra{[Brosch et al., TMI 2016]}
 \end{frame}
 
 \begin{frame}[fragile]{Network Architecture: 7-layer CEN with shortcut}
@@ -751,6 +843,7 @@ node[overlay] at (10pt,-46pt);
 \end{tikzpicture}
 \end{column}
 \end{columns}
+\footlineextra{[Brosch et al., TMI 2016]}
 \end{frame}
 
 \section{Evaluation}
@@ -792,12 +885,13 @@ Evaluation measures:
 
 \begin{frame}{MICCAI 2008 Lesion Segmentation Challenge}
 \sisetup{
+  mode = text,
   round-mode = places,
   round-precision = 2,
   detect-weight=true}%
 Selected methods out of the 52 entries submitted for evaluation to the
-MICCAI 2008 MS lesion segmentation challenge.
-\begin{center}
+MICCAI 2008 MS lesion segmentation challenge.\\[0.5em]
+\centering
 \begin{tabular}{@{}clS[table-format=2.2]
 S[table-format=2.1,round-precision=1]
 S[table-format=2.1,round-precision=1]
@@ -805,11 +899,11 @@ S[table-format=2.1,round-precision=1]@{}}
 \toprule
 Rank & Method & {Score} & {LTPR} & {LFPR} & {VD} \\
 \midrule
-$1,3,9$  & Jesson et al. & 86.9386 & 48.70 & 28.25 & 80.15 \\
+1,\,3,\,9  & Jesson et al. & 86.9386 & 48.70 & 28.25 & 80.15 \\
 2  & Guizard et al.  & 86.1071 & 49.85 & 42.75 & 48.80 \\
-$4,20,26$  & Tomas-Fernandez et. al & 84.464 & 46.9 & 44.6 &
+4,\,20,\,26  & Tomas-Fernandez et. al & 84.464 & 46.9 & 44.6 &
 45.60 \\
-$5,7$ & Jerman et al.    & 84.1555 & 65.15 & 63.75 & 77.45 \\
+5,\,7 & Jerman et al.    & 84.1555 & 65.15 & 63.75 & 77.45 \\
 \bfseries 6  & \bfseries Our method  & \bfseries 84.0743 & \bfseries 51.55 &
 \bfseries 51.25 & \bfseries 57.75 \\
 11 & Roura et al.   & 82.3442 & 50.15 & 41.85 & 111.60 \\
@@ -818,7 +912,7 @@ $5,7$ & Jerman et al.    & 84.1555 & 65.15 & 63.75 & 77.45 \\
 33 & Sudre et al. & 77.9601 & 22.3 & 18.1 & 285.6 \\
 \bottomrule
 \end{tabular}
-\end{center}
+%\end{center}
 \end{frame}
 
 \subsection{Clinical Trial Data Set}
